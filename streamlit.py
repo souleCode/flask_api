@@ -1,10 +1,14 @@
 import streamlit as st
 import requests
+import joblib
 import pandas as pd
 import numpy as np
+from model import CustomPipelineWithFeatureSelection
 
-# URL de l'API Flask
-API_URL = "http://localhost:5000/predict"
+
+# load model
+with open('model/pipeline_v2.pkl', 'rb') as f:
+    model_pipeline = joblib.load(f)
 
 st.set_page_config(page_title="Prédictions de Modèle", page_icon=":star:")
 
@@ -52,18 +56,12 @@ input_data = {
 if st.button('Faire une prédiction', key='predict_button'):
     df = pd.DataFrame([input_data])
 
-    response = requests.post(API_URL, json=df.to_dict(orient='records'))
-
-    if response.status_code == 200:
-        result = response.json()
-        st.subheader('Résultats de la Prédiction')
-        if result['class_predictions'][0] == 1:
-            st.write('classification : EverDeliquent')
-            rounded_prediction = round(result['reg_predictions'][0], 2)
-            st.write('Prediction of prepayment risk:', rounded_prediction)
-        else:
-            st.write(
-                'Prédictions de classification :Not EverDeliquent, Prepayement risk prediction not needed')
-
+    y_class_pred, y_reg_pred = model_pipeline.predict(df)
+    st.subheader('Résultats de la Prédiction')
+    if y_class_pred == 1:
+        st.write('classification : EverDeliquent')
+        # rounded_prediction = round(y_reg_pred, 2)
+        st.write('Prediction of prepayment risk:', round(y_reg_pred[0], 2))
     else:
-        st.error('Erreur lors de la requête à l\'API')
+        st.write(
+            'Prédictions de classification :Not EverDeliquent, Prepayement risk prediction not needed')
