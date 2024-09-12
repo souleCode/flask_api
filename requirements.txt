@@ -5,3 +5,4 @@ imbalanced-learn==0.12.3
 pandas== 2.2.2
 numpy==2.1.1
 gunicorn
+joblib==1.4.2
