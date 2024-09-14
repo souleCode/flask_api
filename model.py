@@ -201,5 +201,5 @@ y_class_pred, y_reg_pred = pipeline.predict(X_test)
 
 
 # Save the pipeline
-# joblib.dump(pipeline, 'model/pipeline_v2.pkl')
+# joblib.dump(pipeline, 'model/pipeline.pkl')
 # print(data['FirstTimeHomebuyer'])

@@ -7,7 +7,7 @@ from model import CustomPipelineWithFeatureSelection
 
 
 # load model
-with open('model/pipeline_v2.pkl', 'rb') as f:
+with open('model/pipeline.pkl', 'rb') as f:
     model_pipeline = joblib.load(f)
 
 st.set_page_config(
@@ -30,9 +30,9 @@ st.markdown(
     </style>
     """, unsafe_allow_html=True
 )
-st.markdown('<h1 class="title">MSB-Mortgage-Prepayment Prediction App</h1>',
+st.markdown('<h1 class="title">MSB-Mortgage-Prediction App</h1>',
             unsafe_allow_html=True)
-st.header('Enter your details here')
+st.header('Entrer les données pour prédiction')
 
 # Formulaire pour entrer les données avec des clés uniques
 input_data = {
@@ -56,15 +56,15 @@ input_data = {
 }
 
 # Bouton pour soumettre les données avec une clé unique
-if st.button('Prediction', key='predict_button'):
+if st.button('Faire une prédiction', key='predict_button'):
     df = pd.DataFrame([input_data])
 
     y_class_pred, y_reg_pred = model_pipeline.predict(df)
-    st.subheader('Résultats of Prediction')
+    st.subheader('Résultats de la Prédiction')
     if y_class_pred == 1:
         st.write('classification : EverDeliquent')
         # rounded_prediction = round(y_reg_pred, 2)
         st.write('Prediction of prepayment risk:', round(y_reg_pred[0], 2))
     else:
         st.write(
-            'Predictions of classification :Not EverDeliquent, Prepayement risk prediction not needed')
+            'Prédictions de classification :Not EverDeliquent, Prepayement risk prediction not needed')
