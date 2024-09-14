@@ -10,26 +10,29 @@ from model import CustomPipelineWithFeatureSelection
 with open('model/pipeline_v2.pkl', 'rb') as f:
     model_pipeline = joblib.load(f)
 
-st.set_page_config(page_title="Prédictions de Modèle", page_icon=":star:")
+st.set_page_config(
+    page_title="msb-app", page_icon=":star:")
 
-st.title('Prédictions de Modèle')
+# st.title('MSB-Mortgage-Prediction App')
 
-st.markdown("""
+st.markdown(
+    """
     <style>
-    .big-font {
-        font-size:24px !important;
-        color: #1E90FF;
-    }
-    .custom-button {
-        background-color: #FF6347;
-        color: white;
-        padding: 10px;
-        border-radius: 5px;
+    .title {
+        background: linear-gradient(to right, #ff7e5f, #feb47b);  /* linear gradient */
+        -webkit-background-clip: text;
+        color: transparent;
+        font-size: 50px;
+        font-weight: bold;
+        font-family: 'Courier New', Courier, monospace;  /* change font */
+        text-align: center;
     }
     </style>
-    """, unsafe_allow_html=True)
-
-st.header('Entrer les données pour prédiction')
+    """, unsafe_allow_html=True
+)
+st.markdown('<h1 class="title">MSB-Mortgage-Prepayment Prediction App</h1>',
+            unsafe_allow_html=True)
+st.header('Enter your details here')
 
 # Formulaire pour entrer les données avec des clés uniques
 input_data = {
@@ -53,15 +56,15 @@ input_data = {
 }
 
 # Bouton pour soumettre les données avec une clé unique
-if st.button('Faire une prédiction', key='predict_button'):
+if st.button('Prediction', key='predict_button'):
     df = pd.DataFrame([input_data])
 
     y_class_pred, y_reg_pred = model_pipeline.predict(df)
-    st.subheader('Résultats de la Prédiction')
+    st.subheader('Résultats of Prediction')
     if y_class_pred == 1:
         st.write('classification : EverDeliquent')
         # rounded_prediction = round(y_reg_pred, 2)
         st.write('Prediction of prepayment risk:', round(y_reg_pred[0], 2))
     else:
         st.write(
-            'Prédictions de classification :Not EverDeliquent, Prepayement risk prediction not needed')
+            'Predictions of classification :Not EverDeliquent, Prepayement risk prediction not needed')
